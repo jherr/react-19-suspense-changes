@@ -4,11 +4,11 @@ import cors from "cors";
 express()
   .use(cors())
   .get("/", (req, res) => {
-    const start = new Date().toLocaleTimeString();
+    const start = new Date().toISOString();
     setTimeout(() => {
       res.json({
         start,
-        end: new Date().toLocaleTimeString(),
+        end: new Date().toISOString(),
       });
     }, 2000);
   })
