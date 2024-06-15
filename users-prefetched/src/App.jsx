@@ -56,9 +56,12 @@ function User({ id }) {
 }
 
 function App() {
+  getUser("1");
+  getOrders("1");
+
   return (
     <>
-      <h1>Users/Orders - Waterfall</h1>
+      <h1>Users/Orders Example (prefetched)</h1>
       <Suspense fallback={<h2>Top level suspense...</h2>}>
         <User id="1" />
       </Suspense>

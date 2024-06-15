@@ -4,27 +4,51 @@ import { USERS, ORDERS } from "./data";
 import memoize from "./memoize";
 
 const getOrders = memoize(
-  (id) => new Promise((resolve) => setTimeout(() => resolve(ORDERS[id]), 1000))
+  (id) =>
+    new Promise((resolve) =>
+      setTimeout(
+        () =>
+          resolve({
+            started: new Date().toLocaleTimeString(),
+            orders: ORDERS[id],
+          }),
+        1000
+      )
+    )
 );
 const getUser = memoize(
-  (id) => new Promise((resolve) => setTimeout(() => resolve(USERS[id]), 1000))
+  (id) =>
+    new Promise((resolve) =>
+      setTimeout(
+        () =>
+          resolve({
+            started: new Date().toLocaleTimeString(),
+            user: USERS[id],
+          }),
+        1000
+      )
+    )
 );
 
 function Orders({ ordersPromise }) {
-  const orders = use(ordersPromise);
+  const { started, orders } = use(ordersPromise);
   return (
-    <ul>
-      {orders.map((order) => (
-        <li key={order.id}>{order.name}</li>
-      ))}
-    </ul>
+    <>
+      <div>Orders requested at {started}</div>
+      <ul>
+        {orders.map((order) => (
+          <li key={order.id}>{order.name}</li>
+        ))}
+      </ul>
+    </>
   );
 }
 
 function User({ userPromise, ordersPromise }) {
-  const user = use(userPromise);
+  const { started, user } = use(userPromise);
   return (
     <>
+      <div>User requested at {started}</div>
       <h2>User {user.name}</h2>
       <Orders ordersPromise={ordersPromise} />
     </>
@@ -38,8 +62,6 @@ function App() {
   return (
     <>
       <h1>Users/Orders Example (hoisted)</h1>
-      <div>User requested at {new Date().toLocaleTimeString()}</div>
-      <div>Orders requested at {new Date().toLocaleTimeString()}</div>
       <Suspense fallback={<h2>Top level suspense...</h2>}>
         <User userPromise={userPromise} ordersPromise={ordersPromise} />
       </Suspense>
