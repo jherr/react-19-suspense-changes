@@ -24,7 +24,6 @@ function wrapPromise(promise) {
     error: () => {
       throw response;
     },
-    default: () => response,
   };
 
   return () => handler[status]?.() ?? response;
@@ -49,7 +48,7 @@ function TimeFetcher({ id }) {
 function App() {
   return (
     <>
-      <h1>React 18 - Simple</h1>
+      <h1>React 19 - Simple</h1>
       <Suspense fallback={<h2>Top level suspense...</h2>}>
         <TimeFetcher id="time1" />
         <TimeFetcher id="time2" />

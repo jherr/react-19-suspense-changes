@@ -24,7 +24,6 @@ function wrapPromise(promise) {
     error: () => {
       throw response;
     },
-    default: () => response,
   };
 
   return () => handler[status]?.() ?? response;

@@ -30,10 +30,11 @@ const getUser = memoize(
     )
 );
 
-function Orders() {
+function Orders({ id }) {
+  const { orders, started } = use(getOrders(id));
   return (
     <>
-      <div>Orders requested at {}</div>
+      <div>Orders requested at {started}</div>
       <ul>
         {orders.map((order) => (
           <li key={order.id}>{order.name}</li>
@@ -43,21 +44,29 @@ function Orders() {
   );
 }
 
-function User() {
+function User({ id, children }) {
+  const { user, started } = use(getUser(id));
   return (
     <>
-      <div>User requested at {}</div>
+      <div>User requested at {started}</div>
       <h2>User {user.name}</h2>
-      <Orders id={id} />
+      {children}
     </>
   );
 }
 
 function App() {
+  getUser("1");
+  getOrders("1");
+
   return (
     <>
       <h1>Users/Orders - Starter</h1>
-      <User id="1" />
+      <Suspense fallback={<div>Loading...</div>}>
+        <User id="1">
+          <Orders id="1" />
+        </User>
+      </Suspense>
     </>
   );
 }
